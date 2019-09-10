@@ -7,11 +7,15 @@ console.log('src/index.js runing in ' + process.env.ENVIRONMENT + ' mode');
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use((req, res, next) => {
+  console.log(req.originalUrl);
+  next();
+})
 
 // Routes
-app.use('/example', routes.example)
+app.use('/api/example', routes.example)
 
-app.get('/', (req, res) => {
+app.get('/api/', (req, res) => {
   res.send('Hello world')
 });
 
