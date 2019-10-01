@@ -1,5 +1,4 @@
 import { Router } from 'express';
-
 const router = Router();
 
 const testData = [
@@ -7,13 +6,28 @@ const testData = [
   {id: '2', foo: 'c', bar: 'd'}
 ]
 
-router.get('/', (req, res) => {
-  return res.json(testData);
-});
+const example = (db) => {
+  router.get('/', async (req, res) => {
+    try {
+      const data = await db.query('SELECT * FROM test;')
+      res.json(data);
+    } catch(e) {
+      console.log('error: ', e.message)
+      res.status(500).json({status: e.status, message: e.message})
+    }
+  });
 
-router.get('/:id', (req, res) => {
-  const data = testData.find(d => d.id === req.params.id);
-  return res.json(data);
-});
+  router.get('/:id', async (req, res) => {
+    try {
+      const data = await db.query('SELECT * FROM test WHERE id = $1;', [req.params.id])
+      res.json(data);
+    } catch(e) {
+      console.log('error: ', e.message)
+      res.status(500).json({status: e.status, message: e.message})
+    }
+  });
 
-export default router;
+  return router
+}
+
+export default example;

@@ -14,6 +14,7 @@ describe("useCounter", function() {
     beforeEach(function() {
       result = renderHook(() => useCounter(10)).result
     })
+
     it("should starts with count = 10", function() {
       expect(result.current.count).toBe(10)
     })

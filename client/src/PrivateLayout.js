@@ -10,9 +10,13 @@ const PrivateLayout = () => {
   const [data, setData] = useState([])
   useEffect(() => {
     const getExamples = async () => {
-      const result = (await axios.get("/api/example/")).data
-      console.log(result)
-      setData(result)
+      try {
+        const result = (await axios.get("/api/example/")).data
+        console.log(result)
+        setData(result)
+      } catch(e) {
+        console.log(e)
+      }
     }
     getExamples()
   }, [])
@@ -20,7 +24,7 @@ const PrivateLayout = () => {
     <div className='layout'>
       <div>Div 1</div>
       <div><Routes /></div>
-      { data.map(d => <div> {d.foo} </div>)}
+      { data.map(d => <div key={d.id}> {d.name} </div>)}
     </div>
   )
 }
